@@ -268,11 +268,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_BOOT_JARS += qcmediaplayer
 
-# QRNGD
-PRODUCT_PACKAGES += \
-    qrngd \
-    qrngp
-
 # Keystore
 PRODUCT_PACKAGES += \
     keystore.qcom
@@ -310,28 +305,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # App
 PRODUCT_PACKAGES += \
-    SlimLauncher \
     Stk \
-    busybox \
-    FileExplorer \
-    CellBroadcastReceiver \
-    Updater \
-    libvt_jni \
-    qti_permissions.xml \
-    libimscamera_jni
-
-PRODUCT_PACKAGES += \
-    AudioFX \
-    Eleven \
-    CMFileManager
-
-# Superuser
-PRODUCT_PACKAGES += \
-    Superuser \
-    su
-
-PRODUCT_PROPERTY_OVERRIDES += \
-     persist.sys.root_access=1
+    CellBroadcastReceiver
 
 # CodeAurora
 PRODUCT_PACKAGES += \
