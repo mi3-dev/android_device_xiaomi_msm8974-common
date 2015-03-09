@@ -30,16 +30,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.notification_sound=FadeIn.ogg \
     ro.config.alarm_alert=GoodMorning.ogg
 
-PRODUCT_BUILD_GMS := true
-
-ifeq ($(PRODUCT_BUILD_GMS),true)
-# GMS
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.com.google.clientidbase=android-xiaomi
-
-$(call inherit-product, vendor/google/products/gms_aosp.mk)
-endif
-
 # Audio
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media/FadeIn.ogg:system/media/audio/notifications/FadeIn.ogg \
