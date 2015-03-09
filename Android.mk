@@ -16,9 +16,6 @@
 
 ifneq ($(filter cancro cancro_lte_ct virgo,$(TARGET_PRODUCT)),)
 
-$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/liblisten_intermediates)
-$(shell touch $(OUT)/obj/SHARED_LIBRARIES/liblisten_intermediates/export_includes)
-
 LOCAL_PATH := $(call my-dir)
 
 #include $(call all-makefiles-under,$(LOCAL_PATH))
