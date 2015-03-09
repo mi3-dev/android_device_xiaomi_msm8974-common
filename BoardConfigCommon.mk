@@ -99,9 +99,6 @@ TARGET_INIT_VENDOR_LIB := libinit_msm
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
 
-# Simple time service client
-BOARD_USES_QC_TIME_SERVICES := true
-
 # Graphics
 BOARD_EGL_CFG := $(COMMON_PATH)/configs/egl.cfg
 USE_OPENGL_RENDERER := true
@@ -177,13 +174,6 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
 BOARD_HAS_NO_SELECT_BUTTON := true
 
-SUPERUSER_EMBEDDED := true
-
 TARGET_USES_LOGD := false
-
-BOARD_USES_LEGACY_MMAP := true
-
-# Include an expanded selection of fonts
-EXTENDED_FONT_FOOTPRINT := true
 
 -include vendor/xiaomi/cancro/BoardConfigVendor.mk
