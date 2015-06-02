@@ -99,11 +99,12 @@
 /dev/media*               0660   system     camera
 /dev/v4l-subdev*          0660   system     camera
 /dev/qseecom              0660   system     drmrpc
+/dev/pft                  0660   system     drmrpc
 /dev/gemini0              0660   system     camera
 /dev/jpeg0                0660   system     camera
 /dev/jpeg1                0660   system     camera
 /dev/jpeg2                0660   system     camera
-/dev/adsprpc-smd          0660   system     media
+/dev/adsprpc-smd          0664   system     system
 /dev/system_health_monitor 0644  radio      system
 /dev/msm_camera/*         0660   system     camera
 /dev/gemini/              0660   system     camera
@@ -113,7 +114,7 @@
 /dev/msm_vidc_dec_sec     0660   system     audio
 /dev/msm_vidc_enc         0660   system     audio
 /dev/msm_rotator          0660   system     system
-/dev/hw_random            0600   system     system
+/dev/hw_random            0600   root       root
 
 #permissions for audio
 /dev/msm_qcelp            0660   system     audio
@@ -139,6 +140,7 @@
 /dev/msm_preproc_ctl      0660   system     audio
 /dev/msm_rtac             0660   system     audio
 /dev/msm_voicememo        0660   system     audio
+/dev/audio_service        0660   system     audio
 /dev/smd3                 0660   bluetooth  net_bt_stack
 /dev/smd2                 0660   bluetooth  net_bt_stack
 /dev/ttyHSL1              0660   system     system
@@ -174,6 +176,7 @@
 # wlan
 /dev/wcnss_wlan           0660   system     system
 /dev/wcnss_ctrl           0660   system     system
+/dev/rfkill               0660   root       wifi
 #nfc permissions
 /dev/nfc-nci              0660    nfc         nfc
 

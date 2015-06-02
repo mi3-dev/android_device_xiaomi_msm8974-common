@@ -102,8 +102,8 @@ on boot
     chmod 2770 /dev/socket/qmux_gps
 
     #Create PERFD deamon related dirs
-    mkdir /data/misc/perfd 0770 root system
-    chmod 2770 /data/misc/perfd
+    mkdir /data/misc/perfd 0755 root system
+    chmod 2755 /data/misc/perfd
     mkdir /data/system/perfd 0770 root system
     chmod 2770 /data/system/perfd
     mkdir /persist/drm 0770 system system
@@ -129,6 +129,9 @@ on boot
 
 
     chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
+
+    #For bridgemgr daemon to inform the USB driver of the correct transport
+    chown radio radio /sys/class/android_usb/f_rmnet_smd_sdio/transport
 
     # For setting tcp delayed ack
     chown system system /sys/kernel/ipv4/tcp_delack_seg
@@ -205,15 +208,17 @@ on boot
     chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
-    # Avoid releasing data call when Null bearer is reported to AP accidentally.
-    setprop persist.radio.snapshot_enabled 1
-    setprop persist.radio.snapshot_timer 10
-
     chown system system /sys/class/leds/button-backlight1/brightness
     chown system system /sys/class/leds/red/blink
     chown system system /sys/class/leds/green/blink
     chown system system /sys/class/leds/blue/blink
     chown system system /sys/class/leds/flashlight/brightness
+
+    chown system system /sys/devices/virtual/graphics/fb0/rgb
+    chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
+
+    chown system system /sys/class/rtc/rtc0/wakealarm
+    chmod 0666 /sys/class/rtc/rtc0/wakealarm
 
     exec /system/bin/sh  /system/bin/set_sensorprop.sh
 
@@ -323,42 +328,10 @@ on post-fs-data
 
     mkdir /data/audio/ 0770 media audio
 
-    setprop vold.post_fs_data_done 1
+    chown system system /sys/vibrator/pwmvalue
+    chmod 0644 /sys/vibrator/pwmvalue
 
-on charger
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system wait ro barrier=1
-    write /sys/class/input/input0/enabled 0
-    write /sys/class/input/input1/enabled 0
-    write /sys/class/input/input2/enabled 0
-    write /sys/class/input/input3/enabled 0
-    write /sys/class/input/input4/enabled 0
-    write /sys/class/input/input5/enabled 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 300000
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "userspace"
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed 300000
-    write /sys/devices/system/cpu/cpu2/online 0
-    write /sys/devices/system/cpu/cpu3/online 0
-    write /sys/module/msm_thermal/parameters/enabled "N"
-    chown root system /sys/power/wake_lock
-    chown root system /sys/power/wake_unlock
-    chmod 0664 /sys/power/wake_lock
-    chmod 0664 /sys/power/wake_lock
-    chown root system /sys/module/qpnp_charger/parameters/charger_monitor
-    chown root system /sys/module/qpnp_charger/parameters/ext_ovp_present
-    chown root system /sys/class/power_supply/battery/input_current_max
-    chown root system /sys/class/power_supply/battery/input_current_trim
-    chown root system /sys/class/power_supply/battery/input_current_settled
-    chown root system /sys/class/power_supply/battery/voltage_min
-    chmod 0664 /sys/class/power_supply/battery/input_current_max
-    chmod 0664 /sys/class/power_supply/battery/input_current_trim
-    chmod 0664 /sys/class/power_supply/battery/input_current_settled
-    chmod 0664 /sys/class/power_supply/battery/voltage_min
-    chmod 0664 /sys/module/qpnp_charger/parameters/charger_monitor
-    start hvdcp
-    start charger_monitor
-    class_start charger
+    setprop vold.post_fs_data_done 1
 
     #Create a folder for SRS to be able to create a usercfg file
     mkdir /data/data/media 0770 media media
@@ -884,6 +857,22 @@ on property:persist.radio.ramdump_sdcard=1
     write /sys/module/subsystem_restart/parameters/enable_ramdumps 1
     start modem_dump
 
+service qlogd /system/xbin/qlogd
+    class main
+    disabled
+on property:persist.sys.qlogd=1
+    start qlogd
+on property:persist.sys.qlogd=0
+    stop qlogd
+
+service rootagent /system/bin/sh /system/etc/init.qcom.rootagent.sh
+    disabled
+    oneshot
+on property:persist.sys.rootagent=1
+    start rootagent
+on property:persist.sys.rootagent=0
+    stop rootagent
+
 #To enalbe fast dormancy for CU
 on property:persist.radio.modem=LTE-CU
     setprop persist.env.fastdorm.enabled true
@@ -891,6 +880,12 @@ on property:persist.radio.modem=LTE-CU
     setprop persist.fd.scroff.timer 3000
     setprop persist.fd.scron.timer 10000
 
+service mmbn-daemon /system/bin/mmbn-daemon
+    disabled
+    oneshot
+
+on property:persist.radio.modem=LTE-X5-ALL
+    start mmbn-daemon
 
 service sensorext /system/bin/sensorextd
     class late_start

@@ -32,12 +32,12 @@
         <item>"wifi,1,1,1,-1,true"</item>
         <item>"mobile,0,0,0,-1,true"</item>
         <item>"mobile_mms,2,0,2,60000,true"</item>
-        <item>"mobile_supl,3,0,2,300000,true"</item>
-        <item>"mobile_dun,4,0,2,300000,true"</item>
-        <item>"mobile_hipri,5,0,3,300000,true"</item>
-        <item>"mobile_fota,10,0,2,300000,true"</item>
-        <item>"mobile_ims,11,0,2,300000,true"</item>
-        <item>"mobile_cbs,12,0,2,300000,true"</item>
+        <item>"mobile_supl,3,0,2,60000,true"</item>
+        <item>"mobile_dun,4,0,2,60000,true"</item>
+        <item>"mobile_hipri,5,0,3,60000,true"</item>
+        <item>"mobile_fota,10,0,2,60000,true"</item>
+        <item>"mobile_ims,11,0,2,60000,true"</item>
+        <item>"mobile_cbs,12,0,2,60000,true"</item>
         <item>"bluetooth,7,7,2,-1,true"</item>
     </string-array>
 
@@ -158,15 +158,23 @@
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveNotificationLed">true</bool>
 
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+         rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
-
 
     <!-- Enable overlay for all location components. -->
     <bool name="config_enableNetworkLocationOverlay" translatable="false">false</bool>
     <string name="config_networkLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
     <bool name="config_enableFusedLocationOverlay" translatable="false">false</bool>
     <string name="config_fusedLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
+
+    <!-- Component name of the geofence services provider. -->
+    <string name="config_geofenceServicesProvider" translatable="false">com.qualcomm.location</string>
+
+    <!-- Component name of the combo network location provider. -->
+    <string name="config_comboNetworkLocationProvider" translatable="false">com.qualcomm.location</string>
 
     <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
          on the headphone/microphone jack. When false use the older uevent framework. -->
@@ -225,6 +233,10 @@
          on the headphone/microphone jack. When false use the older uevent framework. -->
     <bool name="config_useDevInputEventForAudioJack">true</bool>
 
+    <!-- Boolean indicating if RADIO POWER OFF should be skipped on receiving SIM REFRESH with RESET-->
+    <!-- This will be handled by modem if it is true-->
+    <bool translatable="false" name="skip_radio_power_off_on_sim_refresh_reset">true</bool>
+
     <!-- Configuration to restart radio upon PDP_DEACTIVATE with
          error cause as Regular deactivation(36). -->
     <bool name="config_radio_reset_on_regular_deactivation">false</bool>
@@ -257,9 +269,15 @@
          If no value is found for the rat-name in use, the system default will be applied.
     -->
     <string-array name="config_mobile_tcp_buffers">
-        <item>hsdpa:4094,87380,704512,4096,16384,110208</item>
-        <item>hspa:4094,87380,704512,4096,16384,110208</item>
-        <item>hsupa:4094,87380,704512,4096,16384,110208</item>
+        <item>"lte:2097152,4194304,8388608,262144,524288,1048576"</item>
+        <item>"umts:4094,87380,1220608,4096,16384,1220608"</item>
+        <item>"hspa:4094,87380,1220608,4096,16384,1220608"</item>
+        <item>"hsupa:4094,87380,1220608,4096,16384,1220608"</item>
+        <item>"hsdpa:4094,87380,1220608,4096,16384,1220608"</item>
+        <item>"hspap:4094,87380,1220608,4096,16384,1220608"</item>
+        <item>"edge:4093,26280,35040,4096,16384,35040"</item>
+        <item>"gprs:4092,8760,11680,4096,8760,11680"</item>
+        <item>"evdo:4094,87380,524288,4096,16384,262144"</item>
     </string-array>
 
     <!-- Flag indicating if the speed up audio on mt call code should be executed -->
@@ -275,4 +293,11 @@
     </string-array>
 
     <bool name="config_cellBroadcastAppLinks">true</bool>
+    <bool name="config_lidControlsSleep">true</bool>
+
+    <!-- Default color for notification LED is blue. -->
+    <color name="config_defaultNotificationColor">#0000FF</color>
+
+    <!-- Configuartion to set zen mode when silent mode is on -->
+    <bool name="config_setZenModeWhenSilentModeOn">true</bool>
 </resources>

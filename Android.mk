@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+LOCAL_PATH := $(call my-dir)
 
 ifneq ($(filter cancro cancro_lte_ct virgo,$(TARGET_PRODUCT)),)
 
-LOCAL_PATH := $(call my-dir)
-
-#include $(call all-makefiles-under,$(LOCAL_PATH))
+include $(call all-makefiles-under,$(LOCAL_PATH))
 
 endif

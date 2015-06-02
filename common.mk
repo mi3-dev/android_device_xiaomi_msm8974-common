@@ -124,6 +124,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/system/etc/wifi/WCNSS_qcom_wlan_nv_x4.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x4.bin \
     $(LOCAL_PATH)/rootdir/system/etc/wifi/WCNSS_qcom_wlan_nv_x4lte.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x4lte.bin \
     $(LOCAL_PATH)/rootdir/system/etc/wifi/WCNSS_qcom_wlan_nv_x5.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x5.bin \
+    $(LOCAL_PATH)/rootdir/system/etc/wifi/WCNSS_qcom_wlan_nv_x5gbl.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x5gbl.bin \
     $(LOCAL_PATH)/rootdir/system/etc/wifi/hostapd.accept:system/etc/hostapd/hostapd.accept \
     $(LOCAL_PATH)/rootdir/system/etc/wifi/hostapd.deny:system/etc/hostapd/hostapd.deny \
     $(LOCAL_PATH)/rootdir/system/etc/wifi/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
@@ -229,6 +230,9 @@ PRODUCT_PACKAGES += \
     mount.exfat \
     fsck.exfat \
     mkfs.exfat \
+    mkfs.f2fs \
+    fsck.f2fs \
+    fibmap.f2fs \
     ntfsfix \
     ntfs-3g \
     mkntfs \
@@ -238,8 +242,14 @@ PRODUCT_PACKAGES += \
     mke2fs_static \
     resize2fs_static
 
+# Extra tools
+PRODUCT_PACKAGES += \
+    vim
+
 PRODUCT_PACKAGES += \
     libxml2
+
+PRODUCT_PACKAGES += camera.msm8974
 
 # Graphics
 PRODUCT_PACKAGES += \
@@ -280,9 +290,18 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     ebtables \
     ethertypes \
+    libebtc \
+    libcurl \
     curl \
     libnl_2 \
-    libbson
+    libbson \
+    libcnefeatureconfig
+
+#IPTABLES
+PRODUCT_PACKAGES += \
+    libiptc \
+    libext \
+    iptables
 
 # ANT+
 PRODUCT_PACKAGES += \
@@ -291,22 +310,16 @@ PRODUCT_PACKAGES += \
     ANTRadioService \
     antradio_app
 
-# fmradio support
-PRODUCT_PACKAGES += \
-    qcom.fmradio \
-    libqcomfm_jni \
-    FM2 \
-    FMRecord
-
-PRODUCT_BOOT_JARS += qcom.fmradio
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.fm.transmitter=false
-
 # App
 PRODUCT_PACKAGES += \
+    Launcher3 \
     Stk \
-    CellBroadcastReceiver
+    busybox \
+    CellBroadcastReceiver \
+    Updater
+
+PRODUCT_PACKAGES += \
+    AudioFX
 
 # CodeAurora
 PRODUCT_PACKAGES += \
@@ -460,6 +473,11 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.use-awesome=true \
     debug.mdpcomp.4k2kSplit=1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.ltm_enable=true \
+    assertdisplay.value=128 \
+    persist.sys.gamut_mode=0
 
 # call dalvik heap config
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
