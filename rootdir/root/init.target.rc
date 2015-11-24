@@ -148,6 +148,12 @@ service qgesturesvr /system/bin/mm-gesture-daemon
     user system
     group system camera input graphics net_bt_stack
 
+#start GNSS/Sensor interface daemon
+service gsiff_daemon /system/bin/gsiff_daemon
+    class late_start
+    user gps
+    group gps net_raw misc
+
 on property:sys.boot_completed=1
     start qrngp
 
@@ -167,7 +173,7 @@ service qosmgrd /system/bin/qosmgr /system/etc/qosmgr_rules.xml
    group system
    disabled
 
-service thermal-engine /system/bin/thermal-engine
+service thermal-engine /system/vendor/bin/thermal-engine --config /system/etc/thermal-engine-perf.conf
    user root
    socket thermal-send-client stream 0666 system system
    socket thermal-recv-client stream 0660 system system
@@ -175,7 +181,7 @@ service thermal-engine /system/bin/thermal-engine
    group root
    disabled
 
-service thermal-perf /system/bin/thermal-engine --config /system/etc/thermal-engine-perf.conf
+service thermal-perf /system/vendor/bin/thermal-engine --config /system/etc/thermal-engine-perf.conf
    class main
    user root
    group radio system
@@ -404,6 +410,7 @@ on property:persist.radio.modem=LTE-X5-ALL
     setprop persist.radio.disable_flexmap 0
     setprop ro.sys.oosenhance.timer 20000
 on property:persist.radio.modem=LTE-X5
+    setprop persist.radio.disable_flexmap 1
     setprop ro.sys.oosenhance.timer 20000
 
 service eyecare /system/bin/eyecare

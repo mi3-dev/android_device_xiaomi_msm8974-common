@@ -37,9 +37,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media/GoodMorning.ogg:system/media/audio/alarms/GoodMorning.ogg \
     $(LOCAL_PATH)/media/MI.ogg:system/media/audio/ringtones/MI.ogg
 
-# include additional build utilities
--include $(LOCAL_PATH)/utils.mk
-
 # Inherit from the common Open Source product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
@@ -57,4 +54,3 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, $(LOCAL_PATH)/common.mk)
-$(call inherit-product, vendor/xiaomi/cancro/cancro-vendor.mk)
